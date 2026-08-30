@@ -19,6 +19,16 @@ jobs:
       - name: Configure Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Configure debug signing
+        run: |
+          mkdir -p /home/runner/.android /home/runner/.config/godot
+          keytool -genkeypair -noprompt \
+            -keystore /home/runner/.android/debug.keystore \
+            -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass android -keypass android \
+            -dname "CN=Android Debug,O=Kedi Macerasi,C=TR"
+          cp ci/editor_settings-4.tres /home/runner/.config/godot/editor_settings-4.tres
+
       - name: Export Android APK
         id: export
         uses: firebelley/godot-export@v6.0.0
