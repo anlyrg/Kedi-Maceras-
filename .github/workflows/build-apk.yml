@@ -19,6 +19,9 @@ jobs:
       - name: Configure Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Install Android API 34 toolchain
+        run: sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools"
+
       - name: Install Godot 4.4.1
         run: |
           mkdir -p /opt/godot /home/runner/.local/share/godot/export_templates/4.4.1.stable
@@ -44,7 +47,7 @@ jobs:
       - name: Export Android APK
         run: |
           mkdir -p build
-          /opt/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path . --export-debug Android build/kedi-macerasi.apk
+          /opt/godot/Godot_v4.4.1-stable_linux.x86_64 --verbose --headless --path . --export-debug Android build/kedi-macerasi.apk
 
       - name: Locate APK
         run: |
