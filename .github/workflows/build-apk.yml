@@ -25,6 +25,7 @@ jobs:
           relative_project_path: ./
           archive_output: false
           cache: true
+          export_debug: true
 
       - name: Locate APK
         run: |
