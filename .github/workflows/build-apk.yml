@@ -19,6 +19,15 @@ jobs:
       - name: Configure Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Install Godot 4.4.1
+        run: |
+          mkdir -p /opt/godot /home/runner/.local/share/godot/export_templates/4.4.1.stable
+          wget -q https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip -O /tmp/godot.zip
+          unzip -q /tmp/godot.zip -d /opt/godot
+          chmod +x /opt/godot/Godot_v4.4.1-stable_linux.x86_64
+          wget -q https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_export_templates.tpz -O /tmp/templates.tpz
+          unzip -q -j /tmp/templates.tpz -d /home/runner/.local/share/godot/export_templates/4.4.1.stable
+
       - name: Configure debug signing
         run: |
           mkdir -p /home/runner/.android /home/runner/.config/godot
@@ -29,24 +38,20 @@ jobs:
             -dname "CN=Android Debug,O=Kedi Macerasi,C=TR"
           cp ci/editor_settings-4.tres /home/runner/.config/godot/editor_settings-4.tres
 
+      - name: Validate Godot project
+        run: /opt/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path . --editor --quit
+
       - name: Export Android APK
-        id: export
-        uses: firebelley/godot-export@v6.0.0
-        with:
-          godot_executable_download_url: https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip
-          godot_export_templates_download_url: https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_export_templates.tpz
-          relative_project_path: ./
-          archive_output: false
-          cache: true
-          export_debug: true
+        run: |
+          mkdir -p build
+          /opt/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path . --export-debug Android build/kedi-macerasi.apk
 
       - name: Locate APK
         run: |
           mkdir -p dist
           find . -type f -name '*.apk' -print
-          APK_PATH="$(find . -type f -name '*.apk' | head -n 1)"
-          test -n "$APK_PATH"
-          cp "$APK_PATH" dist/Kedi-Macerasi-v0.1.0.apk
+          test -f build/kedi-macerasi.apk
+          cp build/kedi-macerasi.apk dist/Kedi-Macerasi-v0.1.0.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
