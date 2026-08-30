@@ -39,7 +39,7 @@ jobs:
             -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
             -storepass android -keypass android \
             -dname "CN=Android Debug,O=Kedi Macerasi,C=TR"
-          cp ci/editor_settings-4.tres /home/runner/.config/godot/editor_settings-4.tres
+          cp ci/editor_settings-4.tres /home/runner/.config/godot/editor_settings-4.4.tres
 
       - name: Validate Godot project
         run: /opt/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path . --editor --quit
