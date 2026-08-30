@@ -36,6 +36,7 @@ jobs:
           chmod +x /opt/godot/Godot_v4.4.1-stable_linux.x86_64
           wget -q https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_export_templates.tpz -O /tmp/templates.tpz
           unzip -q -j /tmp/templates.tpz -d /home/runner/.local/share/godot/export_templates/4.4.1.stable
+          test -f /home/runner/.local/share/godot/export_templates/4.4.1.stable/android_debug.apk
 
       - name: Configure debug signing
         run: |
