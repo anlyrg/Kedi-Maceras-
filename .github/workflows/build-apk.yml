@@ -19,6 +19,12 @@ jobs:
       - name: Configure Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Configure Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
       - name: Install Android API 34 toolchain
         run: sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools"
 
@@ -39,6 +45,7 @@ jobs:
             -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
             -storepass android -keypass android \
             -dname "CN=Android Debug,O=Kedi Macerasi,C=TR"
+          sed -i "s|__JAVA_SDK_PATH__|${JAVA_HOME}|g" ci/editor_settings-4.tres
           cp ci/editor_settings-4.tres /home/runner/.config/godot/editor_settings-4.4.tres
 
       - name: Validate Godot project

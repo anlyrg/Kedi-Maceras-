@@ -2,6 +2,7 @@
 
 [resource]
 export/android/android_sdk_path = "/usr/local/lib/android/sdk"
+export/android/java_sdk_path = "__JAVA_SDK_PATH__"
 export/android/debug_keystore = "/home/runner/.android/debug.keystore"
 export/android/debug_keystore_user = "androiddebugkey"
 export/android/debug_keystore_pass = "android"
